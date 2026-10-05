@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPrompt AI — Green AI & Sustainability Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <h1 class="brand-title">EcoPrompt <span class="highlight">AI</span></h1>
+          <p class="brand-subtitle">Green AI Intelligence & Carbon Footprint Auditor</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-green"><span class="pulse-dot"></span> Grid-Aware AI</span>
+        <span class="badge badge-neutral" id="current-time-badge">Real-time Metrics</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs-wrapper">
+    <div class="tabs-container">
+      <button class="nav-tab active" data-tab="auditor-tab">
+        <span class="tab-icon">✨</span> EcoPrompt Auditor
+      </button>
+      <button class="nav-tab" data-tab="calculator-tab">
+        <span class="tab-icon">⚡</span> AI Carbon Calculator
+      </button>
+      <button class="nav-tab" data-tab="cloud-tab">
+        <span class="tab-icon">☁️</span> Cloud & GPU Auditor
+      </button>
+      <button class="nav-tab" data-tab="lifestyle-tab">
+        <span class="tab-icon">🌍</span> Lifestyle Eco-Audit
+      </button>
+      <button class="nav-tab" data-tab="advisor-tab">
+        <span class="tab-icon">💡</span> Green AI Advisor
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    
+    <!-- TAB 1: ECOPROMPT AUDITOR -->
+    <section id="auditor-tab" class="tab-panel active">
+      <div class="panel-intro">
+        <h2>Prompt Token & Carbon Optimizer</h2>
+        <p>Analyze prompts for redundant fluff, conversational overhead, and token bloat. Compress prompts to save energy, cost, and $CO_2$ emissions without sacrificing AI response accuracy.</p>
+      </div>
+
+      <div class="grid-two-columns">
+        <!-- Input Form -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Input Prompt to Audit</h3>
+            <span class="chip">Token Trimmer</span>
+          </div>
+          <div class="form-group">
+            <label for="prompt-input">Paste Prompt or System Instructions:</label>
+            <textarea id="prompt-input" rows="8" placeholder="e.g. Please could you kindly act as an expert senior software engineer and please give me a comprehensive, detailed and exhaustive summary of this code due to the fact that I need it for the purpose of a meeting..."></textarea>
+            <div class="textarea-footer">
+              <span id="char-token-counter">Estimated Tokens: 0</span>
+              <button class="btn-text" id="btn-load-sample">Load Verbose Sample</button>
+            </div>
+          </div>
+
+          <div class="grid-three">
+            <div class="form-group">
+              <label for="audit-model-tier">Target Model Tier:</label>
+              <select id="audit-model-tier">
+                <option value="giant_reasoning">Giant Frontier (Claude Sonnet / GPT-4o)</option>
+                <option value="large_frontier">Large Frontier (LLaMA-3 70B)</option>
+                <option value="medium_balanced" selected>Balanced General (Gemma 2 27B)</option>
+                <option value="small_compact">Compact Edge / Flash (<8B)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="audit-quantization">Precision:</label>
+              <select id="audit-quantization">
+                <option value="fp16" selected>FP16 / BF16 (Standard)</option>
+                <option value="int8">INT8 Quantized</option>
+                <option value="int4">INT4 High-Efficiency</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="audit-region">Hosting Region:</label>
+              <select id="audit-region">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="audit-monthly-calls">Estimated Monthly Prompt Executions:</label>
+            <input type="number" id="audit-monthly-calls" value="25000" min="1" step="1000">
+          </div>
+
+          <button id="btn-run-audit" class="btn btn-primary btn-block">
+            <span>🌿 Run EcoPrompt Audit</span>
+          </button>
+        </div>
+
+        <!-- Audit Results Card -->
+        <div class="card glass-card result-card" id="audit-result-card">
+          <div class="card-header">
+            <h3>Audit Report & Optimized Prompt</h3>
+            <span id="audit-eco-grade-badge" class="badge badge-accent">Eco Grade: --</span>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-box">
+              <span class="metric-label">Token Savings</span>
+              <span class="metric-value text-green" id="res-token-reduction">0%</span>
+              <span class="metric-sub" id="res-token-diff">0 → 0 tokens</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Monthly CO₂ Avoided</span>
+              <span class="metric-value text-emerald" id="res-co2-saved">0 g</span>
+              <span class="metric-sub" id="res-kwh-saved">0 kWh saved</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Semantic Clarity</span>
+              <span class="metric-value text-blue" id="res-clarity-score">--</span>
+              <span class="metric-sub">Heuristic Rating</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="split-label">
+              <label>Optimized Green AI Prompt:</label>
+              <button class="btn-copy" id="btn-copy-prompt">📋 Copy Clean Prompt</button>
+            </div>
+            <textarea id="optimized-prompt-output" rows="6" readonly class="code-font"></textarea>
+          </div>
+
+          <div class="suggestions-box">
+            <h4>Optimization Insights:</h4>
+            <ul id="audit-suggestions-list" class="styled-list">
+              <li>Enter a prompt above and click "Run EcoPrompt Audit" to inspect energy savings.</li>
+            </ul>
+          </div>
+
+          <!-- Equivalents Row -->
+          <div class="equivalents-grid" id="audit-equivalents-grid">
+            <div class="eq-item">
+              <span class="eq-icon">📱</span>
+              <div>
+                <strong id="eq-phones">0</strong>
+                <p>Phone Charges Saved</p>
+              </div>
+            </div>
+            <div class="eq-item">
+              <span class="eq-icon">🚗</span>
+              <div>
+                <strong id="eq-car-km">0 km</strong>
+                <p>Car Driving Equivalent</p>
+              </div>
+            </div>
+            <div class="eq-item">
+              <span class="eq-icon">🌲</span>
+              <div>
+                <strong id="eq-tree-days">0 days</strong>
+                <p>Tree Carbon Absorption</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: AI CARBON CALCULATOR -->
+    <section id="calculator-tab" class="tab-panel">
+      <div class="panel-intro">
+        <h2>AI Workload Energy & Grid Carbon Modeler</h2>
+        <p>Model the energy and carbon footprint of LLM inference at scale across global datacenters, varying architectures, and quantization levels.</p>
+      </div>
+
+      <div class="grid-calculator">
+        <!-- Controls -->
+        <div class="card glass-card">
+          <h3>Workload Parameters</h3>
+
+          <div class="form-group">
+            <label for="calc-model-tier">Model Class:</label>
+            <select id="calc-model-tier">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="calc-quantization">Quantization Level:</label>
+            <select id="calc-quantization">
+              <option value="fp16">FP16 / BF16 (1.0x Baseline Power)</option>
+              <option value="int8">INT8 (~38% Power Reduction)</option>
+              <option value="int4" selected>INT4 (~62% Power Reduction)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="calc-region">Datacenter Grid Location:</label>
+            <select id="calc-region">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="grid-two">
+            <div class="form-group">
+              <label for="calc-input-tokens">Input Tokens / Req:</label>
+              <input type="number" id="calc-input-tokens" value="2000" min="10" step="100">
+            </div>
+            <div class="form-group">
+              <label for="calc-output-tokens">Output Tokens / Req:</label>
+              <input type="number" id="calc-output-tokens" value="600" min="10" step="50">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="calc-monthly-reqs">Monthly Request Volume:</label>
+            <input type="number" id="calc-monthly-reqs" value="100000" min="100" step="5000">
+          </div>
+
+          <button id="btn-run-calculator" class="btn btn-primary btn-block">
+            <span>Calculate Footprint</span>
+          </button>
+        </div>
+
+        <!-- Visual Analytics -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Emissions Breakdown & Regional Comparison</h3>
+            <span class="chip" id="calc-clean-energy-share">Clean Grid: --%</span>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-box">
+              <span class="metric-label">Monthly Energy</span>
+              <span class="metric-value text-blue" id="calc-monthly-kwh">0 kWh</span>
+              <span class="metric-sub" id="calc-per-req-kwh">0 kWh / req</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Monthly Carbon</span>
+              <span class="metric-value text-emerald" id="calc-monthly-kg-co2">0 kg</span>
+              <span class="metric-sub" id="calc-annual-kg-co2">Annual: 0 kg</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="regionalComparisonChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CLOUD & GPU AUDITOR -->
+    <section id="cloud-tab" class="tab-panel">
+      <div class="panel-intro">
+        <h2>Cloud Compute & Dedicated GPU Footprint</h2>
+        <p>Measure the carbon footprint of your cloud VMs, fine-tuning GPU clusters, and CI/CD runners, and identify high-impact green datacenter relocations.</p>
+      </div>
+
+      <div class="grid-two-columns">
+        <div class="card glass-card">
+          <h3>Cloud Hardware Specification</h3>
+
+          <div class="form-group">
+            <label for="cloud-instance">Instance Profile:</label>
+            <select id="cloud-instance">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cloud-region">Datacenter Region:</label>
+            <select id="cloud-region">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="grid-three">
+            <div class="form-group">
+              <label for="cloud-count">Node Count:</label>
+              <input type="number" id="cloud-count" value="1" min="1" max="100">
+            </div>
+            <div class="form-group">
+              <label for="cloud-hours">Hours / Day:</label>
+              <input type="number" id="cloud-hours" value="12" min="1" max="24">
+            </div>
+            <div class="form-group">
+              <label for="cloud-days">Days / Month:</label>
+              <input type="number" id="cloud-days" value="22" min="1" max="31">
+            </div>
+          </div>
+
+          <button id="btn-run-cloud" class="btn btn-primary btn-block">
+            <span>Audit Cloud Emissions</span>
+          </button>
+        </div>
+
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Cloud Carbon Assessment</h3>
+            <span class="chip chip-success" id="cloud-savings-chip">Save up to --%</span>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-box">
+              <span class="metric-label">Monthly Energy</span>
+              <span class="metric-value text-blue" id="cloud-res-kwh">0 kWh</span>
+              <span class="metric-sub" id="cloud-res-hours">0 total hours</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Annual Emissions</span>
+              <span class="metric-value text-emerald" id="cloud-res-annual-kg">0 kg CO₂</span>
+              <span class="metric-sub" id="cloud-res-monthly-kg">0 kg/mo</span>
+            </div>
+          </div>
+
+          <div class="callout callout-green">
+            <h4>💡 Recommended Green Cloud Migration</h4>
+            <p>Relocating to <strong id="cloud-green-alt-region">--</strong> would reduce your emissions by <strong id="cloud-green-savings-pct">--%</strong>, saving <strong id="cloud-green-saved-kg">-- kg CO₂</strong> annually with zero performance penalty.</p>
+          </div>
+
+          <div class="equivalents-grid">
+            <div class="eq-item">
+              <span class="eq-icon">🌲</span>
+              <div>
+                <strong id="cloud-eq-trees">0</strong>
+                <p>Tree-Years to Offset</p>
+              </div>
+            </div>
+            <div class="eq-item">
+              <span class="eq-icon">🚗</span>
+              <div>
+                <strong id="cloud-eq-car">0 km</strong>
+                <p>Passenger Car Miles</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: LIFESTYLE & COMMUTE AUDIT -->
+    <section id="lifestyle-tab" class="tab-panel">
+      <div class="panel-intro">
+        <h2>Personal & Team Sustainability Scorecard</h2>
+        <p>Calculate day-to-day commute, home energy, and dietary emissions to receive a comprehensive sustainability scorecard with personalized reduction steps.</p>
+      </div>
+
+      <div class="grid-two-columns">
+        <div class="card glass-card">
+          <h3>Lifestyle Parameters</h3>
+
+          <div class="form-group">
+            <label for="life-commute-mode">Weekly Commute Method:</label>
+            <select id="life-commute-mode">
+              <option value="petrol_car" selected>Gasoline / Petrol Car</option>
+              <option value="electric_car">Electric Vehicle (EV)</option>
+              <option value="public_transit">Public Transit (Train / Bus / Metro)</option>
+              <option value="bicycle">Bicycle / Walking / Remote</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="life-commute-km">Weekly Commute Distance (km):</label>
+            <input type="number" id="life-commute-km" value="120" min="0" step="10">
+          </div>
+
+          <div class="form-group">
+            <label for="life-home-kwh">Monthly Home Electricity (kWh):</label>
+            <input type="number" id="life-home-kwh" value="320" min="0" step="20">
+          </div>
+
+          <div class="form-group">
+            <label for="life-diet">Dietary Profile:</label>
+            <select id="life-diet">
+              <option value="meat_heavy">Meat Intensive (Daily red meat)</option>
+              <option value="omnivore" selected>Standard Omnivore (Balanced)</option>
+              <option value="pescatarian">Pescatarian (Fish & Vegetarian)</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan / Plant-Based</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="life-region">Residence Grid Region:</label>
+            <select id="life-region">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <button id="btn-run-lifestyle" class="btn btn-primary btn-block">
+            <span>Generate Eco Scorecard</span>
+          </button>
+        </div>
+
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Sustainability Scorecard</h3>
+            <span class="badge badge-accent" id="life-grade-badge">Grade: --</span>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-box">
+              <span class="metric-label">Annual Emissions</span>
+              <span class="metric-value text-emerald" id="life-annual-tons">0.0 t</span>
+              <span class="metric-sub" id="life-monthly-kg">0 kg/mo</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Paris Agreement Target</span>
+              <span class="metric-value text-blue">2.0 t</span>
+              <span class="metric-sub">Per Person / Year</span>
+            </div>
+          </div>
+
+          <div class="chart-container-donut">
+            <canvas id="lifestyleDonutChart"></canvas>
+          </div>
+
+          <div class="suggestions-box">
+            <h4>Key Actionable Steps:</h4>
+            <ul id="life-recommendations-list" class="styled-list">
+              <li>Click "Generate Eco Scorecard" to receive personalized reduction tips.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: GREEN AI ADVISOR & SIMULATOR -->
+    <section id="advisor-tab" class="tab-panel">
+      <div class="panel-intro">
+        <h2>Green AI Architecture Advisor & Migration Simulator</h2>
+        <p>Simulate the compounding environmental impact of migrating from massive frontier models to compact distilled models, quantization, and clean grid datacenters.</p>
+      </div>
+
+      <!-- Simulator Card -->
+      <div class="card glass-card mb-4">
+        <div class="card-header">
+          <h3>⚡ Interactive Green AI Migration Simulator</h3>
+          <span class="chip chip-success">Compounding Savings</span>
+        </div>
+
+        <div class="grid-simulator">
+          <div class="sim-column">
+            <h4>🔴 Current Baseline</h4>
+            <div class="form-group">
+              <label>Model Tier:</label>
+              <select id="sim-curr-tier">
+                <option value="giant_reasoning" selected>Giant Reasoning (Sonnet/GPT-4o/Gemini Pro)</option>
+                <option value="large_frontier">Large Frontier (LLaMA-3 70B)</option>
+                <option value="medium_balanced">Balanced General (Gemma 2 27B)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Precision:</label>
+              <select id="sim-curr-quant">
+                <option value="fp16" selected>FP16 (Full Precision)</option>
+                <option value="int8">INT8</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Region:</label>
+              <select id="sim-curr-region">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+          </div>
+
+          <div class="sim-divider">
+            <span class="sim-arrow">➔</span>
+            <div class="form-group">
+              <label>Monthly Tokens:</label>
+              <input type="number" id="sim-tokens" value="50000000" step="5000000">
+            </div>
+            <button id="btn-run-sim" class="btn btn-primary">Simulate</button>
+          </div>
+
+          <div class="sim-column">
+            <h4>🟢 Green Optimized Architecture</h4>
+            <div class="form-group">
+              <label>Model Tier:</label>
+              <select id="sim-targ-tier">
+                <option value="small_compact" selected>Compact Distilled / Flash (<8B)</option>
+                <option value="medium_balanced">Balanced General (Gemma 2 27B)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Precision:</label>
+              <select id="sim-targ-quant">
+                <option value="int4" selected>INT4 (Quantized)</option>
+                <option value="int8">INT8</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Region:</label>
+              <select id="sim-targ-region">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-row mt-4" id="sim-results-row">
+          <div class="metric-box">
+            <span class="metric-label">CO₂ Reduction</span>
+            <span class="metric-value text-green" id="sim-saved-pct">0%</span>
+            <span class="metric-sub" id="sim-saved-kg">0 kg CO₂ avoided / yr</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Energy Saved</span>
+            <span class="metric-value text-blue" id="sim-saved-kwh">0 kWh / yr</span>
+            <span class="metric-sub" id="sim-tons-metric">0 metric tons CO₂</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Ecological Equivalence</span>
+            <span class="metric-value text-emerald" id="sim-trees-equiv">0 🌲</span>
+            <span class="metric-sub" id="sim-car-equiv">0 car miles avoided</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Static Best Practices Cards -->
+      <div class="advisor-cards-container" id="advisor-cards-container">
+        <!-- Dynamically injected from API -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>🌿 <strong>EcoPrompt AI</strong> — Building the future of sustainable, resource-conscious artificial intelligence.</p>
+      <p class="footer-links">
+        <a href="/docs" target="_blank">Interactive Swagger API</a> •
+        <a href="https://github.com/aditya-vardhan-malpeddi/ecoprompt-ai" target="_blank">GitHub Repository</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
